@@ -1,6 +1,8 @@
 #include "nfq.hpp"
 #include <stdlib.h>
 #include <string.h>
+#include <tins/tins.h>
+using namespace Tins;
 
 char* key;
 size_t klen;
@@ -17,24 +19,19 @@ inline uint8_t ver(uint8_t b) {
         return (b & 0xf0) >> 4;
 }
 
-int offset = 0;
+int offset;
 uint32_t ipxor(uint8_t* &data, size_t &size)
 {
-	switch (ver(data[0])) {
-	case 4:
-                mask(data + 20 + offset, size - 20 - offset);
-		return NF_ACCEPT;
-	case 6:
-                mask(data + 40 + offset, size - 40 - offset);
-		return NF_ACCEPT;
-	}
-	return NF_DROP;
+        mask(data + offset, size - offset);
+        // re-calculate checksums
+        auto vec = IP(data, size).serialize();
+        memcpy(data, vec.data(), size);
+        return NF_ACCEPT;
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc > 3)
-		offset = atoi(argv[3]);
+        offset = atoi(argv[3]);
 
         key = argv[2];
         klen = strlen(key);

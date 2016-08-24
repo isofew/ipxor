@@ -1,4 +1,5 @@
-LDFLAGS+= -lnetfilter_queue
+CXXFLAGS+= -std=c++11
+LDFLAGS+= -lnetfilter_queue -ltins -lpcap
 
 %.o: %.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
