@@ -16,4 +16,5 @@ Data starting from [offset] will be masked by [key]
 
 ### Dependencies
 
- * [libnetfilter_queue](http://www.netfilter.org/projects/libnetfilter_queue) for receiving / injecting packets
+ * [libnetfilter_queue](http://www.netfilter.org/projects/libnetfilter_queue)
+ * [libtins](https://github.com/mfontanini/libtins)
